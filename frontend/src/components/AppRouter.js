@@ -7,10 +7,6 @@ import { Context } from '../index'
 
 export const AppRouter = observer(() => {
 	const { user } = useContext(Context)
-	console.log('АВТОРИЗОВАН', user.isAuth)
-	console.log('ПОЛЬЗОВАТЕЛЬ', user.userRole)
-
-
 	return (
 		<Switch>
 			{user.isAuth && authRoutes.map(({path, Component}) => 
