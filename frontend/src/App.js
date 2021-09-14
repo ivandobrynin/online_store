@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useContext } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import { AppRouter } from './components/AppRouter'
+import { NavBar } from './components/NavBar'
+import { observer } from 'mobx-react-lite'
+import { Context } from './index'
+import { checkAuth } from './http/userAPI'
+import jwtDecode from 'jwt-decode'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export const App = observer(() => {
+	const { user } = useContext(Context)
 
-export default App;
+	useEffect(() => {
+		checkAuth()
+		.then(res => res.json())
+		.then(data => {
+			const token = data.token
+			if (token) {
+				localStorage.setItem('token', token)
+				const decoded = jwtDecode(token)
+				user.setUser(decoded)
+				user.setIsAuth(true)
+				user.setUserRole(decoded.role)
+				user.setUserId(decoded.id)
+			}
+		})
+	}, [])
+
+	return (
+		<BrowserRouter>
+			<NavBar/>
+			<AppRouter/>
+		</BrowserRouter>
+	)
+})

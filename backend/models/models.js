@@ -41,8 +41,8 @@ const Raiting = sequelize.define('raiting', {
 
 const DeviceInfo = sequelize.define('device_info', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-    title: {type: DataTypes.INTEGER, allowNull: false},
-    description: {type: DataTypes.INTEGER, allowNull: false}
+    title: {type: DataTypes.STRING, allowNull: false},
+    description: {type: DataTypes.STRING, allowNull: false}
 })
 
 const TypeBrand = sequelize.define('type_brand', {
@@ -77,5 +77,5 @@ Type.belongsToMany(Brand, {through: TypeBrand})
 Brand.belongsToMany(Type, {through: TypeBrand})
 
 module.exports = {
-    User, Basket, BasketDevice, Device, DeviceInfo, Raiting, Type, Brand, TypeBrand
+  User, Basket, BasketDevice, Device, DeviceInfo, Raiting, Type, Brand, TypeBrand
 }
